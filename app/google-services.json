@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "726881805769",
+    "firebase_url": "https://intelligent-7a3d2.firebaseio.com",
+    "project_id": "intelligent-7a3d2",
+    "storage_bucket": "intelligent-7a3d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726881805769:android:04d568217edea514617418",
+        "android_client_info": {
+          "package_name": "com.sai.intelligent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726881805769-m4m01q2e9dfft55a0h9jno8nagsu7a3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHCTRBSzg05VpX5_8H5_dMZ18BU-wjl8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726881805769-m4m01q2e9dfft55a0h9jno8nagsu7a3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
