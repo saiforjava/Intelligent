@@ -3,30 +3,18 @@ package com.sai.intelligent.services;
 import android.app.IntentService;
 import android.app.Service;
 import android.content.Intent;
-import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.JobIntentService;
-import androidx.work.Data;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
-import com.sai.intelligent.utils.AudioRecorder;
 import com.sai.intelligent.utils.Commons;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -35,28 +23,23 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * TODO: Customize class - update intent actions and extra parameters.
  */
-public class SurroundRecorderService extends JobIntentService implements MediaRecorder.OnErrorListener {
+public class SurroundRecorderService extends Service implements MediaRecorder.OnErrorListener {
 
     private static final String TAG = "SurroundRecorderService";
     private File newFile;
 
 
+    @Nullable
     @Override
-    protected void onHandleWork(@NonNull Intent intent) {
-        startSurroundRecording(intent.getIntExtra("time",10000));
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
-    //    @Nullable
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        return null;
-//    }
-//
-//    @Override
-//    public int onStartCommand(Intent intent, int flags, int startId) {
-//        startSurroundRecording(intent.getIntExtra("time",10));
-//        return Service.START_NOT_STICKY;
-//    }
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        startSurroundRecording(intent.getIntExtra("time", 10));
+        return Service.START_NOT_STICKY;
+    }
 
 
 
@@ -89,6 +72,12 @@ public class SurroundRecorderService extends JobIntentService implements MediaRe
                     mediaRecorder.stop();
                     mediaRecorder.release();
                     timer.cancel();
+                    Log.d(TAG, "Recording completed........!");
+                    if (Commons.isInternetAvailable(getApplicationContext()) == true) {
+                        Intent intent = new Intent(SurroundRecorderService.this, UploadFilesService.class);
+                        intent.putExtra("folderName", "SurroundAudios");
+                        startService(intent);
+                    }
                 }
             }, recordTime + 10);
         } catch (IOException e) {

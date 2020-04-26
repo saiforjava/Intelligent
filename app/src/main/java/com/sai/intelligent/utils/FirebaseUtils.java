@@ -3,10 +3,6 @@ package com.sai.intelligent.utils;
 import android.net.Uri;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -29,9 +25,13 @@ public class FirebaseUtils {
     }
 
     public static void uploadFile(String folderName,String givenFile) {
-        Uri file = Uri.fromFile(new File(givenFile));
+        File recordedfile = new File(givenFile);
+        Uri file = Uri.fromFile(recordedfile);
         StorageReference surroundRecordRef = FirebaseStorage.getInstance().getReference().child(folderName+"/"+file.getLastPathSegment());
         UploadTask uploadTask = surroundRecordRef.putFile(file);
-        uploadTask.addOnSuccessListener(taskSnapshot -> Log.d(TAG,"File uploaded to firebase store")).addOnFailureListener(e -> Log.d(TAG,"File upload failed to firebase store and exception is : "+e.getMessage()));
+        uploadTask.addOnSuccessListener(command -> {
+            Log.d(TAG, "File uploaded to firebase store");
+            recordedfile.delete();
+        }).addOnFailureListener(e -> Log.d(TAG, "File upload failed to firebase store and exception is : " + e.getMessage()));
     }
 }
